@@ -15,13 +15,11 @@ export class ProductService {
 
   getProductList(): Observable<Product[]> {
     return this.httpClinet.get<GetResponse>(this.baseUrl).pipe(
-      map(response => response._embedded.products)
-    );
+      map(response => response.products)
+    )   
   }
 }
 
 interface GetResponse {
-  _embedded: {
-    products: Product[];
-  }
+  products: Product[];
 }
