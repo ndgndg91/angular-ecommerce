@@ -29,7 +29,7 @@ export class ProductService {
   getProductCategories(): Observable<ProductCategory[]> {
 
     return this.httpClinet.get<GetResponseProductCategory>(this.categoryUrl).pipe(
-      map(response => response.productCategoies)
+      map(response => response.productCategories)
     )   
   }
 }
@@ -39,5 +39,5 @@ interface GetResponseProducts {
 }
 
 interface GetResponseProductCategory {
-  productCategoies: ProductCategory[];
+  productCategories: ProductCategory[];
 }
