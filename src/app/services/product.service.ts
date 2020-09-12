@@ -18,8 +18,17 @@ export class ProductService {
   getProductList(theCategoryId: number): Observable<Product[]> {
 
     // need to build URL based on category id
-
     const searchUrl = `${this.baseUrl}/search/findByCategoryId?id=${theCategoryId}`;
+
+    return this.httpClinet.get<GetResponseProducts>(searchUrl).pipe(
+      map(response => response.products)
+    )   
+  }
+
+  searchProducts(theKeyword: string): Observable<Product[]> {
+
+    // need to build URL based on the keyworkd
+    const searchUrl = `${this.baseUrl}/search/findByNameContaining?name=${theKeyword}`;
 
     return this.httpClinet.get<GetResponseProducts>(searchUrl).pipe(
       map(response => response.products)
