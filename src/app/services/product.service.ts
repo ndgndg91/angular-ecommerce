@@ -16,22 +16,22 @@ export class ProductService {
   constructor(private httpClinet: HttpClient) { }
 
   getProduct(theProductId: number): Observable<Product> {
-    
+
     // need to build URL based on product id
     const productUrl = `${this.baseUrl}/${theProductId}`;
 
     return this.httpClinet.get<Product>(productUrl);
   }
 
-  getProductListPaginate(thePage: number, 
-                        thePageSize: number, 
-                        theCategoryId: number): Observable<GetResponseProducts> {
+  getProductListPaginate(thePage: number,
+    thePageSize: number,
+    theCategoryId: number): Observable<GetResponseProducts> {
 
     // need to build URL based on category id, page and size
     const searchUrl = `${this.baseUrl}/search/findByCategoryId?id=${theCategoryId}&page=${thePage}&size=${thePageSize}`;
     console.log(searchUrl);
 
-    return this.httpClinet.get<GetResponseProducts>(searchUrl);   
+    return this.httpClinet.get<GetResponseProducts>(searchUrl);
   }
 
   getProductList(theCategoryId: number): Observable<Product[]> {
@@ -41,7 +41,7 @@ export class ProductService {
 
     return this.httpClinet.get<GetResponseProducts>(searchUrl).pipe(
       map(response => response.products)
-    )   
+    )
   }
 
   searchProducts(theKeyword: string): Observable<Product[]> {
@@ -51,14 +51,25 @@ export class ProductService {
 
     return this.httpClinet.get<GetResponseProducts>(searchUrl).pipe(
       map(response => response.products)
-    )   
+    )
+  }
+
+  searchProductsPaginate(thePage: number,
+                         thePageSize: number,
+                         theKeyword: string): Observable<GetResponseProducts> {
+
+    // need to build URL based on keyword, page and size
+    const searchUrl = `${this.baseUrl}/search/findByNameContaining?name=${theKeyword}&page=${thePage}&size=${thePageSize}`;
+    console.log(searchUrl);
+
+    return this.httpClinet.get<GetResponseProducts>(searchUrl);
   }
 
   getProductCategories(): Observable<ProductCategory[]> {
 
     return this.httpClinet.get<GetResponseProductCategory>(this.categoryUrl).pipe(
       map(response => response.productCategories)
-    )   
+    )
   }
 }
 
