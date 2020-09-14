@@ -23,6 +23,17 @@ export class ProductService {
     return this.httpClinet.get<Product>(productUrl);
   }
 
+  getProductListPaginate(thePage: number, 
+                        thePageSize: number, 
+                        theCategoryId: number): Observable<GetResponseProducts> {
+
+    // need to build URL based on category id, page and size
+    const searchUrl = `${this.baseUrl}/search/findByCategoryId?id=${theCategoryId}&page=${thePage}&size=${thePageSize}`;
+    console.log(searchUrl);
+
+    return this.httpClinet.get<GetResponseProducts>(searchUrl);   
+  }
+
   getProductList(theCategoryId: number): Observable<Product[]> {
 
     // need to build URL based on category id
@@ -53,6 +64,10 @@ export class ProductService {
 
 interface GetResponseProducts {
   products: Product[];
+  totalPage: number;
+  totalElements: number;
+  size: number;
+  current: number;
 }
 
 interface GetResponseProductCategory {
