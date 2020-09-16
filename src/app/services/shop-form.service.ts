@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { Country } from '../common/country';
+import { map } from 'rxjs/operators';
+import { State } from '../common/state';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +14,22 @@ export class ShopFormService {
   private statesUrl = 'http://localhost:8080/api/states';
 
   constructor(private httpClient: HttpClient) { }
+
+  getCountries(): Observable<Country[]> {
+    return this.httpClient.get<GetResponseCountries>(this.countriesUrl).pipe(
+      map(response => response.countries)
+    );
+  }
+
+  getStates(theCountryCode: string): Observable<State[]> {
+
+    // search url
+    const searchStateUrl = `${this.statesUrl}/findByCountryCode?code=${theCountryCode}`;
+
+    return this.httpClient.get<GetResponseStates>(searchStateUrl).pipe(
+      map(response => response.states)
+    );
+  } 
 
   getCreditCardMonths(startMonth: number): Observable<number[]> {
 
@@ -42,4 +61,12 @@ export class ShopFormService {
 
     return of(data);
   }
+}
+
+interface GetResponseCountries {
+  countries: Country[];
+}
+
+interface GetResponseStates {
+  states: State[];
 }
