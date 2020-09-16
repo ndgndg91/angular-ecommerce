@@ -22,6 +22,9 @@ export class CheckoutComponent implements OnInit {
 
   countries: Country[] = [];
 
+  shippingAddressStates: State[] = [];
+  billingAddressStates: State[] = [];
+
   constructor(private formBuilder: FormBuilder,
               private shopFormService: ShopFormService) { }
 
@@ -132,5 +135,32 @@ export class CheckoutComponent implements OnInit {
          this.creditCardMonths = data;
        }
      )
+  }
+
+  getStates(formGroupName: string) {
+
+    console.log(formGroupName);
+    const formGroup = this.checkoutFormGroup.get(formGroupName);
+    console.log(formGroup);
+
+    const countryCode = formGroup.value.country.code;
+    const countryName = formGroup.value.country.name;
+
+    console.log(`${formGroupName} country code: ${countryCode}`)
+    console.log(`${formGroupName} country name: ${countryName}`)
+
+    this.shopFormService.getStates(countryCode).subscribe(
+      data => {
+        if (formGroupName === 'shippingAddress') {
+          this.shippingAddressStates = data;
+        }
+        else {
+          this.billingAddressStates = data;
+        }
+
+        // select first item by default
+        formGroup.get('state').setValue(data[0]);
+      }
+    )
   }
 }
